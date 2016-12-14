@@ -44,4 +44,11 @@ public class Building_ChangeRender : MonoBehaviour {
     {
         this.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
     }
+
+    void OnTriggerEnter(Collider col)
+    {
+        
+        if (col.tag == "ShockWave")
+            ChangeToColorCamera();
+    }
 }

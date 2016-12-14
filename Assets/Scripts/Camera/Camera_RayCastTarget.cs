@@ -36,6 +36,7 @@ public class Camera_RayCastTarget : MonoBehaviour
             }
             else
             {
+
                 _hit.collider.GetComponent<Building_ChangeRender>().ChangeRenderFade();
                 Color _newColor = _hit.collider.GetComponent<Renderer>().material.color;
                 _newColor.a = 0.25f;

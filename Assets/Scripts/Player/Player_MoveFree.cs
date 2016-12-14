@@ -24,11 +24,14 @@ public class Player_MoveFree : MonoBehaviour
     private bool m_CanInputAgain = true;
     private bool m_CanSpeedUp = true;
     private int m_PrivateMaxMoveSpeed;
+    private bool m_CanChangePath = true;
 
     void Start()
     {
         m_RbPlayer = GetComponent<Rigidbody>();
         m_CanInputAgain = false;
+        m_CanChangePath = true;
+        
 
     }
 
@@ -36,44 +39,45 @@ public class Player_MoveFree : MonoBehaviour
     void Update()
     {
         state = GamePad.GetState(playerIndex);
-
-        if (m_RbPlayer.velocity == Vector3.zero && ((state.ThumbSticks.Left.X != 0) || (state.ThumbSticks.Left.Y != 0)))
+        if (m_CanChangePath)
         {
-            Movement();
-        }
-
-        if (((state.ThumbSticks.Left.X != 0) || (state.ThumbSticks.Left.Y != 0)))
-        {
-
-
-            m_PrivateMaxMoveSpeed = m_MaxMoveSpeed;
-            Vector3 rotatePos = new Vector3(state.ThumbSticks.Left.X, 0, state.ThumbSticks.Left.Y);
-            rotatePos.y = 0;
-            float angle = Mathf.Atan2(rotatePos.z, rotatePos.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(new Vector3(0, -(angle + 270), 0));
-
-            if (m_CanSpeedUp == true)
+            if (m_RbPlayer.velocity == Vector3.zero && ((state.ThumbSticks.Left.X != 0) || (state.ThumbSticks.Left.Y != 0)))
             {
-                m_CanSpeedUp = false;
                 Movement();
             }
 
-        }
+            if (((state.ThumbSticks.Left.X != 0) || (state.ThumbSticks.Left.Y != 0)))
+            {
 
-        if (state.Buttons.A == ButtonState.Pressed)
-        {
-            m_MoveSpeed = 0;
-        }
 
-        if ((state.ThumbSticks.Left.X == 0) && (state.ThumbSticks.Left.Y == 0) && m_CanSpeedUp == false)
-        {
-            m_PrivateMaxMoveSpeed = m_MaxMoveSpeed / 10;
-            StartCoroutine(DecreaseMovement());
-            m_CanSpeedUp = true;
-        }
+                m_PrivateMaxMoveSpeed = m_MaxMoveSpeed;
+                Vector3 rotatePos = new Vector3(state.ThumbSticks.Left.X, 0, state.ThumbSticks.Left.Y);
+                rotatePos.y = 0;
+                float angle = Mathf.Atan2(rotatePos.z, rotatePos.x) * Mathf.Rad2Deg;
+                transform.rotation = Quaternion.Euler(new Vector3(0, -(angle + 270), 0));
 
+                if (m_CanSpeedUp == true)
+                {
+                    m_CanSpeedUp = false;
+                    Movement();
+                }
+
+            }
+
+            if (state.Buttons.Y == ButtonState.Pressed)
+            {
+                m_MoveSpeed = 0;
+            }
+
+            if ((state.ThumbSticks.Left.X == 0) && (state.ThumbSticks.Left.Y == 0) && m_CanSpeedUp == false)
+            {
+                m_PrivateMaxMoveSpeed = m_MaxMoveSpeed / 10;
+                StartCoroutine(DecreaseMovement());
+                m_CanSpeedUp = true;
+            }
+        }
         m_RbPlayer.velocity = transform.forward * m_MoveSpeed;
-
+        
 
 
     }
@@ -118,4 +122,16 @@ public class Player_MoveFree : MonoBehaviour
     //    }
 
     //}
+
+    public void SetPath(bool _state)
+    {
+        m_CanChangePath = _state;
+        this.GetComponent<Player_Dash>().SetNormalSpeed(m_MoveSpeed);
+    }
+
+    public void SetVelocityDash(float _velocity)
+    {
+        m_MoveSpeed = _velocity;
+    }
+
 }
