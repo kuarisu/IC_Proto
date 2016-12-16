@@ -18,6 +18,11 @@ public class Player_MoveFree : MonoBehaviour
     float m_Acceleration;
     [SerializeField]
     float m_Sensibility;
+    [SerializeField]
+    int m_MiniMoveSpeed;
+    [SerializeField]
+    float m_Deseleration;
+
 
 
     private bool m_CanMove = true;
@@ -71,7 +76,7 @@ public class Player_MoveFree : MonoBehaviour
 
             if ((state.ThumbSticks.Left.X == 0) && (state.ThumbSticks.Left.Y == 0) && m_CanSpeedUp == false)
             {
-                m_PrivateMaxMoveSpeed = m_MaxMoveSpeed / 10;
+                m_PrivateMaxMoveSpeed = m_MiniMoveSpeed;
                 StartCoroutine(DecreaseMovement());
                 m_CanSpeedUp = true;
             }
@@ -105,23 +110,11 @@ public class Player_MoveFree : MonoBehaviour
     {
         while (m_MoveSpeed > m_PrivateMaxMoveSpeed && m_CanMove)
         {
-            m_MoveSpeed -= (m_Acceleration * 3);
+            m_MoveSpeed -= m_Deseleration;
             yield return new WaitForEndOfFrame();
         }
     }
 
-    //void Rotate()
-    //{
-
-    //    if ((state.ThumbSticks.Left.X != 0) || (state.ThumbSticks.Left.Y != 0))
-    //    {
-    //        Vector3 rotatePos = new Vector3(state.ThumbSticks.Left.X, 0, state.ThumbSticks.Left.Y);
-    //        rotatePos.y = 0;
-    //        float angle = Mathf.Atan2(rotatePos.z, rotatePos.x) * Mathf.Rad2Deg;
-    //        transform.rotation = Quaternion.Euler(new Vector3(0, 0, -(angle + 90)));
-    //    }
-
-    //}
 
     public void SetPath(bool _state)
     {
