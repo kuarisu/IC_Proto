@@ -71,17 +71,12 @@ public class Wave_Action : MonoBehaviour {
             _currentTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-        Debug.Log("hello");
         Destroy(this.gameObject);
         yield return null;
         
     }
 
-    void OnTriggerEnter(Collider col)
-    {
-        if (col.tag == "Building")
-            col.gameObject.GetComponent<Building_ChangeRender>().ChangeToColorCamera();
-    }
+
     
 
 }

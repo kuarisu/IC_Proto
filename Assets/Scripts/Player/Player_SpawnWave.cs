@@ -22,18 +22,30 @@ public class Player_SpawnWave : MonoBehaviour {
         if (state.Buttons.B == ButtonState.Pressed  && m_CanSpawnAgain)
         {
             StartCoroutine(SpawnWave());
+            StartCoroutine(Vibration());
 
         }
 	}
 
     IEnumerator SpawnWave()
     {
+
         m_CanSpawnAgain = false;
         GameObject _Wave = (GameObject)Instantiate(m_WavePrefab, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
+
         _Wave.GetComponent<Wave_Action>().m_Target = this.transform;
         yield return new WaitForSeconds(m_WaitingTime);
         m_CanSpawnAgain = true;
         yield return null;
+    }
+
+    IEnumerator Vibration()
+    {
+        GamePad.SetVibration(playerIndex, 0.5f, 0.5f);
+        yield return new WaitForSeconds(0.2f);
+        GamePad.SetVibration(playerIndex, 0, 0);
+        yield return null;
+
     }
 
 }
