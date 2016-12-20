@@ -4,15 +4,24 @@ using System.Collections;
 public class Building_ChangeRender : MonoBehaviour {
 
     Material mat;
+    bool m_IsColored;
     
     void Start()
     {
+        m_IsColored = false;
         mat = GetComponent<Renderer>().material;
     }
 
     public void ChangeToColorCamera()
     {
         this.gameObject.layer = LayerMask.NameToLayer("Default");
+        m_IsColored = true;
+    }
+
+    public void ChangeToBWCamera()
+    {
+        this.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
+        m_IsColored = false;
     }
 
     public void ChangeRenderFade()
@@ -40,15 +49,13 @@ public class Building_ChangeRender : MonoBehaviour {
         mat.renderQueue = -1;
     }
 
-    public void ChangeToBWCamera()
-    {
-        this.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
-    }
-
     void OnTriggerEnter(Collider col)
     {
-        
-        if (col.tag == "ShockWave")
+
+        if (col.tag == "ShockWave" && !m_IsColored)
+        {
             ChangeToColorCamera();
+            this.GetComponent<Building_Points>().SpawnMultipliers();
+        }
     }
 }

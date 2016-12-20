@@ -13,7 +13,7 @@ public class Player_MoveFree : MonoBehaviour
     [SerializeField]
     float m_MoveSpeed = 0;
     [SerializeField]
-    int m_MaxMoveSpeed;
+    float m_MaxMoveSpeed;
     [SerializeField]
     float m_Acceleration;
     [SerializeField]
@@ -22,20 +22,24 @@ public class Player_MoveFree : MonoBehaviour
     int m_MiniMoveSpeed;
     [SerializeField]
     float m_Deseleration;
+    [SerializeField]
+    float m_LosingSpeedWhenShockwave;
 
 
 
     private bool m_CanMove = true;
     private bool m_CanInputAgain = true;
     private bool m_CanSpeedUp = true;
-    private int m_PrivateMaxMoveSpeed;
+    private float m_PrivateMaxMoveSpeed;
     private bool m_CanChangePath = true;
+    private float m_StartMaxSpeed;
 
     void Start()
     {
         m_RbPlayer = GetComponent<Rigidbody>();
         m_CanInputAgain = false;
         m_CanChangePath = true;
+        m_StartMaxSpeed = m_MaxMoveSpeed;
         
 
     }
@@ -127,4 +131,28 @@ public class Player_MoveFree : MonoBehaviour
         m_MoveSpeed = _velocity;
     }
 
+    public void DecreaseMaxSpeed()
+    {
+        if (m_LosingSpeedWhenShockwave < m_MaxMoveSpeed)
+        {
+            m_MaxMoveSpeed -= m_LosingSpeedWhenShockwave;
+            m_PrivateMaxMoveSpeed = m_MaxMoveSpeed;
+
+            if(m_MoveSpeed > m_MiniMoveSpeed)
+                m_MoveSpeed = m_PrivateMaxMoveSpeed;
+        }
+    }
+
+    public void IncreaseMaxSpeed(float _FloatToIncreaseSpeed)
+    {
+        if(m_MaxMoveSpeed < m_StartMaxSpeed)
+        {
+            m_MaxMoveSpeed += _FloatToIncreaseSpeed;
+            m_PrivateMaxMoveSpeed = m_MaxMoveSpeed;
+
+            if (m_MoveSpeed > m_MiniMoveSpeed)
+                m_MoveSpeed = m_PrivateMaxMoveSpeed;
+        }
+
+    }
 }

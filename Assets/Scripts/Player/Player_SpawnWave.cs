@@ -21,6 +21,7 @@ public class Player_SpawnWave : MonoBehaviour {
 
         if (state.Buttons.B == ButtonState.Pressed  && m_CanSpawnAgain)
         {
+            Camera_ScreenShake.Instance.ScreenShakeStart();
             StartCoroutine(SpawnWave());
             StartCoroutine(Vibration());
 
@@ -29,7 +30,7 @@ public class Player_SpawnWave : MonoBehaviour {
 
     IEnumerator SpawnWave()
     {
-
+        //this.GetComponent<Player_MoveFree>().DecreaseMaxSpeed();
         m_CanSpawnAgain = false;
         GameObject _Wave = (GameObject)Instantiate(m_WavePrefab, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
 
