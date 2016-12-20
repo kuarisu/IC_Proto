@@ -5,6 +5,7 @@ public class Building_ChangeRender : MonoBehaviour {
 
     Material mat;
     bool m_IsColored;
+    int m_GainPoints;
     
     void Start()
     {
@@ -56,6 +57,12 @@ public class Building_ChangeRender : MonoBehaviour {
         {
             ChangeToColorCamera();
             this.GetComponent<Building_Points>().SpawnMultipliers();
+            GameManager_Score.Instance.UpdateScore(m_GainPoints);
         }
+    }
+
+    public void SetGainedPoints(int _PointFromScript)
+    {
+        m_GainPoints = _PointFromScript;
     }
 }

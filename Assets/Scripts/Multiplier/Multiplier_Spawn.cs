@@ -6,16 +6,17 @@ public class Multiplier_Spawn : MonoBehaviour {
 
     [SerializeField]
     Animator m_An;
+    [SerializeField]
+    GameObject m_Visual;
 
     Vector3 m_DirectionToPlayer;
     Vector3 m_PlayerPos;
     Vector3 m_PreviousPos;
-    bool m_CanBeTaken;
 
 
 	// Use this for initialization
 	void Start () {
-        m_CanBeTaken = false;
+        m_Visual.SetActive(false);
         m_PreviousPos = transform.position;
         m_PlayerPos = GameManager_PlayerPos.Instance.m_PlayerPosition.position;
 
@@ -69,10 +70,11 @@ public class Multiplier_Spawn : MonoBehaviour {
 
     IEnumerator EnableColliderAndAnim()
     {
-        yield return new WaitForSeconds(0.1f);
-        m_An.SetBool(0, true);
+        yield return new WaitForSeconds(0.2f);
+        m_Visual.SetActive(true);
+        m_An.SetBool("CanBeAnimated", true);
         yield return new WaitForSeconds(0.5f);
-        m_CanBeTaken = true;
+        this.GetComponent<Multiplier_Value>().ChangeBoolToBeTaken(true);
 
         yield return null;
     }

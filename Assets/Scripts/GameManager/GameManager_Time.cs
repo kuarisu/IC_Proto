@@ -35,7 +35,7 @@ public class GameManager_Time : MonoBehaviour {
 
     IEnumerator Timer()
     {
-        while(true)
+        while(m_Seconds >= 0 && m_Minutes > 0)
         {
             if (m_Seconds <= 0)
             {
@@ -50,7 +50,11 @@ public class GameManager_Time : MonoBehaviour {
             m_Seconds -= (int)Time.deltaTime;
 
             //Debug.Log(string.Format("{0}:{1}", minutes, seconds);
-            m_TimerText.text = m_TimerString + " " + m_Minutes + ":" + m_Seconds;
+            if (m_Seconds >= 10)
+                m_TimerText.text = m_TimerString + " " + m_Minutes + ":" + m_Seconds;
+            else
+                m_TimerText.text = m_TimerString + " " + m_Minutes + ":0" + m_Seconds;
+
 
             yield return new WaitForSeconds(1);
 

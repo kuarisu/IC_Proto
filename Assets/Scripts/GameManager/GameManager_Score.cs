@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -37,6 +38,7 @@ public class GameManager_Score : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        m_Multiplier = 1;
         m_GeneralScore = 0;
         m_CurrentScore = m_GeneralScore;
         m_ScoreText.text = m_ScoreString + " " + m_GeneralScore;
@@ -84,6 +86,7 @@ public class GameManager_Score : MonoBehaviour {
 
     void ChangeTextMultiplier()
     {
+        m_Multiplier = (float)Math.Round((double)m_Multiplier, 2);
         m_MultiplierText.text = m_MultiplierString + " " + m_Multiplier;
     }
 }

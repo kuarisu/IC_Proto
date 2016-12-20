@@ -43,6 +43,7 @@ public class Building_Points : MonoBehaviour {
                 break;
         }
 
+        this.GetComponent<Building_ChangeRender>().SetGainedPoints(m_PointsAddedToScore);
     }
 	
 	public void SpawnMultipliers()
