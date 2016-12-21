@@ -7,6 +7,8 @@ public class InqPatrols_Management : MonoBehaviour {
     [SerializeField]
     List<Transform> m_ListOfPositionsForPatrol = new List<Transform>();
 
+    GameObject m_TargetedInquisitor;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -17,12 +19,10 @@ public class InqPatrols_Management : MonoBehaviour {
 		
 	}
 
-    void OnTriggerEnter(Collider col)
+    public void SendListPosToInquisitor(GameObject _inquisitorRequestingList) 
     {
-        if(col.transform.tag == "Inquisitor")
-        {
-            //Set col. Statemachine. CurrentState. En Patroling au lieu de Walking.
-            //Communiquer la liste des transform au state de patroling pour qu'il loop.
-        }
+        m_TargetedInquisitor = _inquisitorRequestingList;
+        m_TargetedInquisitor.GetComponent<Inquisitor_SelfManagement>().SetListOfPatrol(m_ListOfPositionsForPatrol);
+        
     }
 }

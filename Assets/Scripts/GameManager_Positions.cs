@@ -10,6 +10,8 @@ public class GameManager_Positions : MonoBehaviour {
 
     public List<Transform> m_ListOfStartPatrols = new List<Transform>();
 
+    public Transform m_PlayerPos;
+
 
     public static GameManager_Positions Instance;
     private void Awake()
