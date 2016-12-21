@@ -7,8 +7,8 @@ public class Building_Points : MonoBehaviour {
     [SerializeField]
     enum Category
     {
-        Unknown,
-        SmallBuilding,
+        SmallBuildings,
+        MediumBuilding,
         BigBuilding,
         Event,
     }
@@ -27,10 +27,10 @@ public class Building_Points : MonoBehaviour {
 
         switch (m_CategoriesOfBuilding)
         {
-            case Category.Unknown:
+            case Category.SmallBuildings:
                 m_PointsAddedToScore = GameManager_Points.Instance.m_ListValueMultiplier[0];
                 break;
-            case Category.SmallBuilding:
+            case Category.MediumBuilding:
                 m_PointsAddedToScore = GameManager_Points.Instance.m_ListValueMultiplier[1];
                 break;
             case Category.BigBuilding:

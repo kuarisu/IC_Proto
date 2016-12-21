@@ -31,10 +31,13 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
     float m_DistanceToBeAlerted;    //Distance Minimale à laquelle doit se trouver le player de l'objet pour qu'il passe en état Alerted
     [SerializeField]
     float m_DistanceToStopAlert;    //Distance maximale entre le player et l'objet. Lorsque cette distance est dépassée, l'objet sort de l'état Alerted
+    [SerializeField]
+    float m_DistanceToBait;
 
     // Use this for initialization
     void Start () {
-        m_GoToCloserEvent = false;
+        this.transform.name = "Inquisitor" + (GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.Count - 1);
+        GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.Add(this.gameObject);        
 
         m_Agent = GetComponent<NavMeshAgent>(); 
         m_IsChecking = false;
@@ -47,7 +50,10 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
 
         m_An.GetBehaviour<Inquisitor_Alrted>().SetAgent(m_Agent);
 
+        m_An.GetBehaviour<Inquisitor_Waiting>().SetAgent(m_Agent);
+
         StartWalkingBehavior();                     //Passe l'objet à l'état de Walking
+        StartCoroutine(CheckDistanceToTarget());
         StartCoroutine(CheckDistanceToPlayer());    //Lance le script pour checker la distance entre le player et l'objet
     }
 	
@@ -92,6 +98,21 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
         m_An.SetBool("IsAlerted", false);
     }
 
+    public void StartWaitingBehavior()          //Sort l'objet de l'état alerted
+    {
+        m_An.SetBool("IsWaiting", true);
+    }
+
+    public void StopWaitingBehavior()          //Sort l'objet de l'état alerted
+    {
+        m_An.SetBool("IsWaiting", false);
+
+        if (m_GoToCloserEvent)
+            CheckCloserMinorEvent();
+        else
+            CheckCloserPatrolStart();
+
+    }
 
     //Cette coroutine permet de checker toute les 0.2f la distance entre l'objet et la target et de réagir en fonction de l'objet
     //Si il s'agit d'un event, l'objet va se mettre à chercher le point de patrouille le plus proche et s'y rendre
@@ -101,15 +122,16 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
         while (true)
         {
             float _distanceToTarget = Vector3.Distance(m_CurrentTarget.position, transform.position);               //Calcule la distance entre la target et l'objet
-
             //Si la distance entre la target et l'objet est inférieur à la distance minimale requise alors l'objet réagit
-            if (_distanceToTarget < m_DistanceMiniToTarget )                                                        
+            if (_distanceToTarget < m_DistanceMiniToTarget + (m_CurrentTarget.GetComponent<Collider>().bounds.size.x + m_CurrentTarget.GetComponent<Collider>().bounds.size.z) / 2)
             {
+
                 //Si la target est un Event et que l'objet n'est pas entrain de calculer la target la plus proche alors:
                 if(m_CurrentTarget.tag == "Event" && !m_IsChecking)
                 {
                     m_IsChecking = true;
                     CheckCloserPatrolStart();
+                    Debug.Log("hello");
                     yield return null;
                 }
                 //Si la target est un début de patrouille:
@@ -120,6 +142,16 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
                     //L'objet passe en état Patroling
                     StartPatrolingBehavior();
                     //La coroutine s'arrête
+                    yield break;
+                }
+
+            }
+
+            if(_distanceToTarget < m_DistanceToBait)
+            {
+                if (m_CurrentTarget.tag == "Bait")
+                {
+                    StartWaitingBehavior();
                     yield break;
                 }
             }
@@ -233,5 +265,13 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
     public void SetListOfPatrol(List<Transform> _ListOfKeyPoints)
     {
         m_An.GetBehaviour<Inquisitor_Patroling>().SetKeyPointsPos(_ListOfKeyPoints);
+    }
+
+    public void Destroy()
+    {
+        int _indexOfGameObject;
+        _indexOfGameObject = GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.IndexOf(this.gameObject);
+        GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.RemoveAt(_indexOfGameObject);
+
     }
 }

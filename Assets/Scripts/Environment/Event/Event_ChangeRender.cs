@@ -1,13 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Building_ChangeRender : MonoBehaviour {
+public class Event_ChangeRender : MonoBehaviour {
 
     Material mat;
-    [HideInInspector]
-    public bool m_IsColored;
+    bool m_IsColored;
     int m_GainPoints;
-    int m_Multiplier;
     
     //pour checker tous les renderers dans les children.
  //   Renderer[] renderers = transform.GetComponentsInChildren<Renderer>();
@@ -18,7 +16,6 @@ public class Building_ChangeRender : MonoBehaviour {
 
 void Start()
     {
-        SetMultiplierOfGainedPoints(1);
         m_IsColored = false;
         mat = GetComponent<Renderer>().material;
     }
@@ -62,21 +59,17 @@ void Start()
 
     void OnTriggerEnter(Collider col)
     {
+
         if (col.tag == "ShockWave" && !m_IsColored)
         {
             ChangeToColorCamera();
             this.GetComponent<Building_Points>().SpawnMultipliers();
-            GameManager_Score.Instance.UpdateScore(m_GainPoints * m_Multiplier);
+            GameManager_Score.Instance.UpdateScore(m_GainPoints);
         }
     }
 
     public void SetGainedPoints(int _PointFromScript)
     {
         m_GainPoints = _PointFromScript;
-    }
-
-    public void SetMultiplierOfGainedPoints(float _MultiplierFromEventBoost)
-    {
-        m_Multiplier = Mathf.RoundToInt(_MultiplierFromEventBoost);
     }
 }

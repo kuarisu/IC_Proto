@@ -14,7 +14,7 @@ public class Camera_RayCastTarget : MonoBehaviour
 
         if (Physics.Raycast(_ray, out _hit, Vector3.Distance(this.transform.position, m_Target.transform.position)))
         {
-            if (_hit.collider.tag == "Building")
+            if (_hit.collider.tag == "Building" || _hit.collider.tag == "Event")
             {
                 if (m_OldHit != null)
                 {

@@ -31,10 +31,9 @@ public class Multiplier_Spawn : MonoBehaviour {
 
     void OnTriggerStay(Collider col)
     {
-        if(col.transform.tag == "Building" || col.transform.tag == "Wall")
+        if(col.transform.tag == "Building" || col.transform.tag == "Wall" || col.transform.tag == "Event")
         {
             transform.position = transform.position + new Vector3(Random.Range(-3, 3) + (m_DirectionToPlayer.x * 2), 0, Random.Range(-3, 3) + (m_DirectionToPlayer.z * 2));
-            Debug.Log("hello");
             ChangeRotation();
         }
     }
