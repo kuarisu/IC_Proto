@@ -63,4 +63,26 @@ public class GameManager_Time : MonoBehaviour {
         //Start Fonction fin du jeu;
     }
 
+    public void EndOfGame()
+    {
+        if(GameManager_Score.Instance.m_GeneralScore >= GameManager_Score.Instance.m_MinimalScore)
+        {
+            Victory();
+        }
+        else
+        {
+            Defeat();
+        }
+    }
+
+    public void Victory()
+    {
+        Debug.Log("Victoryyyyy");
+    }
+
+    void Defeat()
+    {
+        Debug.Log("Defeaaaaaaat");
+    }
+
 }

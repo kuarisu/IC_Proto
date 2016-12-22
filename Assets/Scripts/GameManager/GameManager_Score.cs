@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using UnityEngine;
 
 public class GameManager_Score : MonoBehaviour {
-
+    
+    public int m_MinimalScore;
     [SerializeField]
     Text m_ScoreText;
     [SerializeField]
@@ -17,10 +18,18 @@ public class GameManager_Score : MonoBehaviour {
     string m_MultiplierString;
 
     [SerializeField]
-    float m_GeneralScore;
+    Text m_ScoreRelicText;
+    [SerializeField]
+    string m_ScoreRelicString;
+
+    public float m_GeneralScore;
     float m_CurrentScore;
     [HideInInspector]
     public float m_Multiplier;
+
+    [SerializeField]
+    int m_MaxNbRelic;
+    int m_CurrentNbOfRelic;
     
 
     public static GameManager_Score Instance;
@@ -39,9 +48,11 @@ public class GameManager_Score : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        m_CurrentNbOfRelic = 0;
         m_Multiplier = 1;
         m_GeneralScore = 0;
         m_CurrentScore = m_GeneralScore;
+        m_ScoreRelicText.text = m_ScoreRelicString + m_CurrentNbOfRelic + " / " + m_MaxNbRelic;
         m_ScoreText.text = m_ScoreString + " " + m_GeneralScore;
         m_MultiplierText.text = m_MultiplierString + " " + m_Multiplier;
     }
@@ -90,4 +101,13 @@ public class GameManager_Score : MonoBehaviour {
         m_Multiplier = (float)Math.Round((double)m_Multiplier, 2);
         m_MultiplierText.text = m_MultiplierString + " " + m_Multiplier;
     }
+
+    public void AddRelicToScore()
+    {
+        m_CurrentNbOfRelic++;
+        m_ScoreRelicText.text = m_ScoreRelicString + m_CurrentNbOfRelic + " / " + m_MaxNbRelic;
+        if (m_CurrentNbOfRelic == m_MaxNbRelic)
+            GameManager_Time.Instance.Victory();
+    }
+
 }

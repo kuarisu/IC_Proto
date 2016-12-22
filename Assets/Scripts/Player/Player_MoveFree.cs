@@ -175,6 +175,10 @@ public class Player_MoveFree : MonoBehaviour
             }
 
         }
+        if(col.transform.tag == "Relic")
+        {
+            col.GetComponent<Relic_Caught>().SpawnBlockedArea();
+        }
     }
 
     IEnumerator Stunted()
