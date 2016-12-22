@@ -29,7 +29,7 @@ public class Floor_ChangeRender : MonoBehaviour {
     void OnTriggerEnter(Collider col)
     {
 
-        if (col.tag == "ShockWave" && !m_IsColored)
+        if ((col.tag == "ShockWave" || col.tag == "ShockWaveCar") && !m_IsColored)
         {
             ChangeToColorCamera();
 

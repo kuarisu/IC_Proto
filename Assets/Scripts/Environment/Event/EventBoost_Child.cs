@@ -14,7 +14,7 @@ public class EventBoost_Child : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "ShockWave" && this.GetComponent<Building_ChangeRender>().m_IsColored == false)
+        if ((col.tag == "ShockWave" || col.tag == "ShockWaveCar") && this.GetComponent<Building_ChangeRender>().m_IsColored == false)
         {
             EventChildActivated();
         }

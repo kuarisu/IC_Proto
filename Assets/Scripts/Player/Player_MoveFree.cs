@@ -25,6 +25,9 @@ public class Player_MoveFree : MonoBehaviour
     [SerializeField]
     float m_LosingSpeedWhenShockwave;
 
+    [SerializeField]
+    float m_TimeStunted;
+
 
 
     private bool m_CanMove = true;
@@ -155,4 +158,33 @@ public class Player_MoveFree : MonoBehaviour
         }
 
     }
+
+    void OnTriggerEnter(Collider col)
+    {
+        if(col.transform.tag == "Inquisitor")
+        {
+            col.transform.parent.GetComponent<Inquisitor_SelfManagement>().Destroy();
+            if(GameManager_Score.Instance.m_Multiplier > 1)
+            {
+                GameManager_Score.Instance.ResetMultiplier();
+            }
+            else if(GameManager_Score.Instance.m_Multiplier <= 1)
+            {
+                GameManager_Score.Instance.ResetMultiplier();
+                StartCoroutine(Stunted());
+            }
+
+        }
+    }
+
+    IEnumerator Stunted()
+    {
+        SetPath(false);
+        m_RbPlayer.velocity = Vector3.zero;
+        m_MoveSpeed = 0;
+        //Movement();
+        yield return new WaitForSeconds(m_TimeStunted);
+        SetPath(true);
+    }
+
 }

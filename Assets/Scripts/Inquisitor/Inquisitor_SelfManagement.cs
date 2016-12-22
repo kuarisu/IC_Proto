@@ -7,7 +7,6 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
 
     [SerializeField]
     Animator m_An;          //Permet d'accéder à la state machine
-    [SerializeField]
     Transform m_CurrentTarget; //Serialized pour le debug, puis à set en fonction du trigger lors du spawn. Pourra changer par la suite.
     [SerializeField]
     float m_WalkingSpeed;     //vitesse à la laquelle l'objet se déplace lorsqu'il est en état Walking
@@ -34,8 +33,12 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
     [SerializeField]
     float m_DistanceToBait;
 
+    bool m_doOnce;
+
     // Use this for initialization
     void Start () {
+        m_doOnce = true;
+
         this.transform.name = "Inquisitor" + (GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.Count - 1);
         GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.Add(this.gameObject);        
 
@@ -131,7 +134,6 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
                 {
                     m_IsChecking = true;
                     CheckCloserPatrolStart();
-                    Debug.Log("hello");
                     yield return null;
                 }
                 //Si la target est un début de patrouille:
@@ -269,9 +271,24 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
 
     public void Destroy()
     {
+
+        if (m_doOnce)
+        {
+            StartCoroutine(CoroutineDestroy());
+            m_doOnce = false;
+        }
+    }
+
+    IEnumerator CoroutineDestroy()
+    {
+        Debug.Log("hello");
+        this.GetComponentInChildren<Collider>().enabled = false;
         int _indexOfGameObject;
         _indexOfGameObject = GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.IndexOf(this.gameObject);
         GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.RemoveAt(_indexOfGameObject);
 
+        m_Agent.speed = 0;
+        yield return new WaitForSeconds(1);
+        Destroy(this.gameObject);
     }
 }

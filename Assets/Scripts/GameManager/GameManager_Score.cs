@@ -19,7 +19,8 @@ public class GameManager_Score : MonoBehaviour {
     [SerializeField]
     float m_GeneralScore;
     float m_CurrentScore;
-    float m_Multiplier;
+    [HideInInspector]
+    public float m_Multiplier;
     
 
     public static GameManager_Score Instance;

@@ -27,6 +27,7 @@ public class Player_Dash : MonoBehaviour {
 
     bool m_CanDash = true;
     bool m_CanDashAgain = true;
+    bool m_IsSuperDash = false;
 
 	// Use this for initialization
 	void Start ()
@@ -42,7 +43,7 @@ public class Player_Dash : MonoBehaviour {
         PrevState = state;
         state = GamePad.GetState(playerIndex);
 
-        if(PrevState.Buttons.A == ButtonState.Released && state.Buttons.A == ButtonState.Pressed && m_CanDash)
+        if(PrevState.Buttons.A == ButtonState.Released && state.Buttons.A == ButtonState.Pressed && m_CanDash && !m_IsSuperDash)
         {
             if (m_CanDashAgain)
             {
@@ -79,5 +80,10 @@ public class Player_Dash : MonoBehaviour {
     public void SetNormalSpeed(float _moveSpeed)
     {
         m_NormalSpeed = _moveSpeed;
+    }
+
+    public void IsInSuperDash(bool _canSuperDash)
+    {
+        m_IsSuperDash = _canSuperDash;
     }
 }

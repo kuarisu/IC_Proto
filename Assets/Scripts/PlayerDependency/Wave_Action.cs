@@ -30,7 +30,7 @@ public class Wave_Action : MonoBehaviour {
     float m_MaxWaitingTime;
 
     [HideInInspector]
-    public bool m_CanSuperDash;
+    bool m_CanSuperDash;
 
     [SerializeField]
     bool m_FollowPlayer;
@@ -61,8 +61,11 @@ public class Wave_Action : MonoBehaviour {
 
         _currentTime = 0;
         m_CanSuperDash = true;
+        m_Target.GetComponent<Player_SuperDash>().CanSuperDash(m_CanSuperDash);
         yield return new WaitForSeconds(m_MaxWaitingTime);
         m_CanSuperDash = false;
+        m_Target.GetComponent<Player_SuperDash>().CanSuperDash(m_CanSuperDash);
+        m_Target.GetComponent<Player_SuperDash>().ResetSuperDash();
 
         while (_currentTime < m_MaxTimeDiminution)
         {

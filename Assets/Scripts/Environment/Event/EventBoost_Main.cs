@@ -41,7 +41,6 @@ public class EventBoost_Main : MonoBehaviour {
         {
             m_CurrentMultiplier = (m_MaxMultiplierForPoints / m_ListOfEventChildren.Count) * m_NumberOfActivatedEventChild;
             this.GetComponent<Building_ChangeRender>().SetMultiplierOfGainedPoints(m_CurrentMultiplier);
-            Debug.Log(m_CurrentMultiplier);
         }
 
 

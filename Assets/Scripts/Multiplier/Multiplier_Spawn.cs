@@ -8,6 +8,8 @@ public class Multiplier_Spawn : MonoBehaviour {
     Animator m_An;
     [SerializeField]
     GameObject m_Visual;
+    [SerializeField]
+    float m_TimeBeforeDisappears;
 
     Vector3 m_DirectionToPlayer;
     Vector3 m_PlayerPos;
@@ -26,6 +28,8 @@ public class Multiplier_Spawn : MonoBehaviour {
 
         ChangeRotation();
         StartCoroutine(EnableColliderAndAnim());
+        StartCoroutine(TimeBeforeDisappearing());
+
 
 	}
 
@@ -75,6 +79,13 @@ public class Multiplier_Spawn : MonoBehaviour {
         yield return new WaitForSeconds(0.5f);
         this.GetComponent<Multiplier_Value>().ChangeBoolToBeTaken(true);
 
+        yield return null;
+    }
+
+    IEnumerator TimeBeforeDisappearing()
+    {
+        yield return new WaitForSeconds(m_TimeBeforeDisappears);
+        Destroy(this.gameObject);
         yield return null;
     }
 }

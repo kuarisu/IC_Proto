@@ -6,22 +6,30 @@ using UnityEngine;
 public class EventCar : MonoBehaviour {
 
     NavMeshAgent m_AgentCar;
+    [SerializeField]
+    float m_SpeedPatrol;
+
+    [SerializeField]
     Collider m_ShockWaveCar;
 
 	// Use this for initialization
-	void Start () {
-        m_AgentCar = this.GetComponent<NavMeshAgent>();
-        m_ShockWaveCar.enabled = false;
-	}
+
 
     [SerializeField]
     List<Transform> m_ListOfKeyPoints = new List<Transform>();
 
     Transform m_TargetPosition;
-    NavMeshAgent m_Agent;
+    Transform m_CurrentTarget;
     int m_indexOfNextTarget;
     bool m_HasArrivedDestination;
     float m_DistanceToDestination;
+
+    void Start()
+    {
+        m_AgentCar = this.GetComponent<NavMeshAgent>();
+        m_AgentCar.speed = m_SpeedPatrol;
+        m_ShockWaveCar.enabled = false;
+    }
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     void OnTriggerEnter(Collider col)
@@ -30,37 +38,44 @@ public class EventCar : MonoBehaviour {
         {
             m_indexOfNextTarget = 0;
             m_TargetPosition = m_ListOfKeyPoints[m_indexOfNextTarget].transform;
-            StartCoroutine(Patrol());
+
             m_ShockWaveCar.enabled = true;
+            m_CurrentTarget = m_TargetPosition;
+            StartCoroutine(Patrol());
         }
     }
 
-    // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     IEnumerator Patrol()
     {
 
         while (true)
         {
-            m_Agent.destination = m_TargetPosition.position;
-            m_DistanceToDestination = Vector3.Distance(m_TargetPosition.position, m_Agent.transform.position);
+            m_AgentCar.destination = m_TargetPosition.position;
+            m_DistanceToDestination = Vector3.Distance(m_TargetPosition.position, m_AgentCar.transform.position);
 
-            if (m_DistanceToDestination < 3)
+            if (m_DistanceToDestination < 0.5f)
             {
 
                 if (m_indexOfNextTarget < (m_ListOfKeyPoints.Count - 1))
                 {
-                    m_TargetPosition.position = m_ListOfKeyPoints[m_indexOfNextTarget].transform.position;
+                    SetTarget(m_ListOfKeyPoints[m_indexOfNextTarget].transform);
                     m_indexOfNextTarget++;
                 }
                 else if (m_indexOfNextTarget == m_ListOfKeyPoints.Count - 1)
                 {
-                    m_TargetPosition.position = m_ListOfKeyPoints[m_indexOfNextTarget].transform.position;
+                    SetTarget(m_ListOfKeyPoints[m_indexOfNextTarget].transform);
                     m_indexOfNextTarget = 0;
                 }
             }
+
             yield return new WaitForEndOfFrame();
         }
 
 
+        }
+
+    public void SetTarget(Transform _newPos)
+    {
+        m_TargetPosition = _newPos;
     }
 }

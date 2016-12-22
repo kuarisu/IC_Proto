@@ -9,7 +9,7 @@ public class EventBait : MonoBehaviour {
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "ShockWave" && this.GetComponent<Building_ChangeRender>().m_IsColored == false)
+        if ((col.tag == "ShockWave" || col.tag == "ShockWaveCar") && this.GetComponent<Building_ChangeRender>().m_IsColored == false)
         {
             this.transform.tag = "Bait";
             SetNewPosition();
