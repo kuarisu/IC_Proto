@@ -21,14 +21,25 @@ public class Camera_RayCastTarget : MonoBehaviour
                     if (_hit.collider.gameObject != m_OldHit)
                     {
                         m_OldHit.GetComponent<Building_ChangeRender>().ChangeRenderOpaque();
-                        Color _color = m_OldHit.GetComponent<Renderer>().material.color;
-                        _color.a = 1f;
-                        m_OldHit.GetComponent<Renderer>().material.color = _color;
+
+                        foreach (Renderer Children in m_OldHit.GetComponent<Building_ChangeRender>().m_Visual.GetComponentsInChildren<Renderer>())
+                        {
+                            Color _color = Children.GetComponent<Renderer>().material.color;
+                            _color.a = 1f;
+                            Children.GetComponent<Renderer>().material.color = _color;
+                        }
+                            
+
 
                         _hit.collider.GetComponent<Building_ChangeRender>().ChangeRenderFade();
-                        Color _newColor = _hit.collider.GetComponent<Renderer>().material.color;
-                        _newColor.a = 0.5f;
-                        _hit.collider.GetComponent<Renderer>().material.color = _newColor;
+
+                        foreach (Renderer Children in _hit.collider.GetComponent<Building_ChangeRender>().m_Visual.GetComponentsInChildren<Renderer>())
+                        {
+                            Color _newColor = Children.GetComponent<Renderer>().material.color;
+                            _newColor.a = 0.25f;
+                            Children.GetComponent<Renderer>().material.color = _newColor;
+                        }
+
 
                         m_OldHit = _hit.collider.gameObject;
 
@@ -38,9 +49,15 @@ public class Camera_RayCastTarget : MonoBehaviour
                 {
 
                     _hit.collider.GetComponent<Building_ChangeRender>().ChangeRenderFade();
-                    Color _newColor = _hit.collider.GetComponent<Renderer>().material.color;
-                    _newColor.a = 0.5f;
-                    _hit.collider.GetComponent<Renderer>().material.color = _newColor;
+
+
+                    foreach (Renderer Children in _hit.collider.GetComponent<Building_ChangeRender>().m_Visual.GetComponentsInChildren<Renderer>())
+                    {
+                        Color _newColor = Children.GetComponent<Renderer>().material.color;
+                        _newColor.a = 0.25f;
+                        Children.GetComponent<Renderer>().material.color = _newColor;
+                    }
+
                     m_OldHit = _hit.collider.gameObject;
                 }
             }
@@ -50,9 +67,12 @@ public class Camera_RayCastTarget : MonoBehaviour
             if (m_OldHit != null)
             {
                 m_OldHit.GetComponent<Building_ChangeRender>().ChangeRenderOpaque();
-                Color _color = m_OldHit.GetComponent<Renderer>().material.color;
-                _color.a = 1f;
-                m_OldHit.GetComponent<Renderer>().material.color = _color;
+                foreach (Renderer Children in m_OldHit.GetComponent<Building_ChangeRender>().m_Visual.GetComponentsInChildren<Renderer>())
+                {
+                    Color _color = Children.GetComponent<Renderer>().material.color;
+                    _color.a = 1f;
+                    Children.GetComponent<Renderer>().material.color = _color;
+                }
                 m_OldHit = null;
             }
         }
