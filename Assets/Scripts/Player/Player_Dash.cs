@@ -20,7 +20,7 @@ public class Player_Dash : MonoBehaviour {
     float m_DurationDash;
 
 
-
+    [SerializeField]
     int m_CurrentNbDash;
 
     float m_NormalSpeed;
@@ -85,5 +85,14 @@ public class Player_Dash : MonoBehaviour {
     public void IsInSuperDash(bool _canSuperDash)
     {
         m_IsSuperDash = _canSuperDash;
+    }
+
+    public void AddDash()
+    {
+        if (m_CurrentNbDash < m_NbMaxDash)
+        {
+            Debug.Log(m_CurrentNbDash);
+            m_CurrentNbDash++;
+        }
     }
 }

@@ -14,22 +14,35 @@ public class Player_RayCastFloor : MonoBehaviour
     [SerializeField]
     float m_TimeToStayToRestoreDash;
 
+    bool m_InColor = false;
+
+    void Start()
+    {
+        m_InColor = false;
+    }
+
     // Update is called once per frame
     void Update()
     {
         Ray _ray = new Ray(this.transform.position, Vector3.down);
         RaycastHit _hit;
+        
 
         if (Physics.Raycast(_ray, out _hit, m_LenghtRay))
         {
-            if(_hit.collider.gameObject.layer == LayerMask.NameToLayer("Default"))
+
+            if (_hit.collider.gameObject.layer == 0 && !m_InColor)
             {
 
+                m_InColor = true;
+                StartCoroutine("RestoreSpeed");
+                StartCoroutine("RestoreDash");
             }
-            if (_hit.collider.gameObject.layer == LayerMask.NameToLayer("BlackWhite"))
+            if (_hit.collider.gameObject.layer == 8 && m_InColor)
             {
-                StopCoroutine(RestoreSpeed());
-                StopCoroutine(RestoreDash());
+                m_InColor = false;
+                StopCoroutine("RestoreSpeed");
+                StopCoroutine("RestoreDash");
             }
 
         }
@@ -37,13 +50,13 @@ public class Player_RayCastFloor : MonoBehaviour
 
     IEnumerator RestoreSpeed()
     {
+
         while (true)
         {
             yield return new WaitForSeconds(m_TimeToRestoreSpeed);
             //Add m_NbOfSpeedRestored to MaxSpeed of Player
-
-            //yield return new WaitForEndOfFrame();
-            yield return null;
+            this.GetComponent<Player_MoveFree>().IncreaseMaxSpeed(m_NbOfSpeedRestored);
+            yield return new WaitForEndOfFrame();
         }
 
     }
@@ -57,11 +70,12 @@ public class Player_RayCastFloor : MonoBehaviour
             while (_currentTime < m_TimeToStayToRestoreDash)
             {
                 _currentTime += Time.deltaTime;
+                yield return new WaitForEndOfFrame();
             }
+            this.GetComponent<Player_Dash>().AddDash();
+            _currentTime = 0;
             yield return new WaitForEndOfFrame();
         }
-
-        yield return null;
     }
 
 }

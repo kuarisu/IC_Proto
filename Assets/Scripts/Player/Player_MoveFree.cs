@@ -37,13 +37,16 @@ public class Player_MoveFree : MonoBehaviour
     private bool m_CanChangePath = true;
     private float m_StartMaxSpeed;
 
+    private IEnumerator m_CoroutineStopMovement;
+
     void Start()
     {
         m_RbPlayer = GetComponent<Rigidbody>();
         m_CanInputAgain = false;
         m_CanChangePath = true;
         m_StartMaxSpeed = m_MaxMoveSpeed;
-        
+        m_CoroutineStopMovement = StopMovementCoroutine();
+
 
     }
 
@@ -148,12 +151,12 @@ public class Player_MoveFree : MonoBehaviour
 
     public void IncreaseMaxSpeed(float _FloatToIncreaseSpeed)
     {
-        if(m_MaxMoveSpeed < m_StartMaxSpeed)
+        if(m_MaxMoveSpeed + _FloatToIncreaseSpeed < m_StartMaxSpeed)
         {
             m_MaxMoveSpeed += _FloatToIncreaseSpeed;
             m_PrivateMaxMoveSpeed = m_MaxMoveSpeed;
 
-            if (m_MoveSpeed > m_MiniMoveSpeed)
+            if (m_MoveSpeed < m_MaxMoveSpeed && m_MoveSpeed > 1)
                 m_MoveSpeed = m_PrivateMaxMoveSpeed;
         }
 
@@ -189,6 +192,26 @@ public class Player_MoveFree : MonoBehaviour
         //Movement();
         yield return new WaitForSeconds(m_TimeStunted);
         SetPath(true);
+    }
+
+    public void StopMovement()
+    {
+        StartCoroutine(m_CoroutineStopMovement);
+    }
+
+    IEnumerator StopMovementCoroutine()
+    {
+        while (true)
+        {
+            m_RbPlayer.velocity = Vector3.zero;
+            m_MoveSpeed = 0;
+            yield return new WaitForEndOfFrame();
+        }
+    }
+
+    public void StartMovementAgain()
+    {
+        StopCoroutine(m_CoroutineStopMovement);
     }
 
 }

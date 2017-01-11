@@ -20,7 +20,7 @@ public class Camera_Follow : MonoBehaviour
     void FixedUpdate()
     {
 
-        transform.position = Vector3.SmoothDamp(transform.position, new Vector3 (m_Target.position.x - (m_Distance.x), transform.position.y, m_Target.position.z - (m_Distance.z)), ref m_SmoothVel, m_SmoothTime);
+        transform.position = Vector3.SmoothDamp(transform.position, new Vector3 (m_Target.position.x - (m_Distance.x), m_Target.position.y - (m_Distance.y), m_Target.position.z - (m_Distance.z)), ref m_SmoothVel, m_SmoothTime);
 
     }
 }

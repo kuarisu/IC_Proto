@@ -96,17 +96,20 @@ public class Player_SuperDash : MonoBehaviour {
     {
         if (m_CurrentNbDash > 0)
         {
-            //m_LebonDebug.SetActive(false);
+            
             yield return new WaitForSeconds(m_SuperDurationDash - (m_DurationOfTimeToDashAgain / 2));
+
             m_CanBeActiavtedByShockWave = false;
-            //m_LebonDebug.SetActive(true);
             CanSuperDash(true);
+
             yield return new WaitForSeconds(m_SuperDurationDash + (m_DurationOfTimeToDashAgain / 2));
+
             ResetSuperDash();
+
             m_CanBeActiavtedByShockWave = true;
             CanSuperDash(false);
             Debug.Log("hello");
-            //m_LebonDebug.SetActive(false);
+
         }
     }
     public void SetNormalSpeed(float _moveSpeed)
@@ -125,5 +128,7 @@ public class Player_SuperDash : MonoBehaviour {
 
             m_CurrentNbDash = m_NbMaxDash;
     }
+
+
 }
 
