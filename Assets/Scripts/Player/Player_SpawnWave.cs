@@ -30,7 +30,7 @@ public class Player_SpawnWave : MonoBehaviour {
 
     IEnumerator SpawnWave()
     {
-        //this.GetComponent<Player_MoveFree>().DecreaseMaxSpeed();
+        this.GetComponent<Player_MoveFree>().DecreaseMaxSpeed();
         m_CanSpawnAgain = false;
         GameObject _Wave = (GameObject)Instantiate(m_WavePrefab, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
 

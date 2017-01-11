@@ -11,32 +11,29 @@ public class Building_ChangeRender : MonoBehaviour {
     int m_GainPoints;
     int m_Multiplier;
     
-// foreach(Renderer variableName in GetComponentsInChildren<Renderer>()){
-// r.material.color=Color.red
-//}
 
 void Start()
     {
         SetMultiplierOfGainedPoints(1);
         m_IsColored = false;
-        //mat = m_Visual.GetComponentInChildren<Renderer>().material;
     }
 
     public void ChangeToColorCamera()
     {
-        //this.gameObject.layer = LayerMask.NameToLayer("Default");
+        
+        m_Visual.gameObject.layer = LayerMask.NameToLayer("Default");
 
         foreach (Transform Children in m_Visual.transform)
         {
-            Children.gameObject.layer = LayerMask.NameToLayer("Default");
+            if(Children != null)
+                Children.gameObject.layer = LayerMask.NameToLayer("Default");
         }
-
+        
         m_IsColored = true;
     }
 
     public void ChangeToBWCamera()
     {
-        //this.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
 
         foreach (Transform Children in m_Visual.transform)
         {

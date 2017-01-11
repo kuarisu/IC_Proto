@@ -281,7 +281,6 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
 
     IEnumerator CoroutineDestroy()
     {
-        Debug.Log("hello");
         this.GetComponentInChildren<Collider>().enabled = false;
         int _indexOfGameObject;
         _indexOfGameObject = GameManager_ListOfInquisitor.Instance.m_ListOfInquisitor.IndexOf(this.gameObject);
