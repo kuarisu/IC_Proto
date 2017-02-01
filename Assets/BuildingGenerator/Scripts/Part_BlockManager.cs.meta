@@ -1,11 +1,10 @@
 fileFormatVersion: 2
-guid: 60e0d73da028aeb4eade9f11ee00972c
-timeCreated: 1485963291
+guid: 3f04c07883a5c5e408a3934363300a9a
+timeCreated: 1485958890
 licenseType: Pro
 MonoImporter:
   serializedVersion: 2
-  defaultReferences:
-  - m_Parts: {fileID: 1507901882254262, guid: ead9d5e0118ed454682bc15f36da348f, type: 2}
+  defaultReferences: []
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
