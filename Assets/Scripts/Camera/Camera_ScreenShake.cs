@@ -48,15 +48,15 @@ public class Camera_ScreenShake : MonoBehaviour
     IEnumerator ScreenShake()
     {
         float _ShakeDur = m_ShakeDuration;
-        while (m_ShakeDuration > 0)
+        while (_ShakeDur > 0)
         {
             m_CameraTransform.localPosition = m_CameraTransform.localPosition + Random.insideUnitSphere * m_ShakeAmont;
 
-            m_ShakeDuration -= Time.deltaTime * m_DecreaseFactor;
+            _ShakeDur -= Time.deltaTime * m_DecreaseFactor;
             yield return new WaitForEndOfFrame();
         }
-        m_ShakeDuration = _ShakeDur;
-        m_CameraTransform.localPosition = m_OriginalPos;
+        //m_ShakeDuration = _ShakeDur;
+        m_CameraTransform.localPosition = m_CameraTransform.position;
         yield return null;
     }
 }

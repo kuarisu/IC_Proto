@@ -44,8 +44,7 @@ public class Player_AirVision : MonoBehaviour {
                 StartCoroutine(StopVision());        
             }
         }
-		
-	}
+    }
 
     void StartAirVision()
     {
