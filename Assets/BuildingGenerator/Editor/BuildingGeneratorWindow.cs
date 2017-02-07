@@ -13,12 +13,7 @@ public class BuildingGeneratorWindow : EditorWindow
     GameObject m_VisualBuilding;
     GameObject m_Building;
 
-    GameObject m_BlockTypeOne;
-    GameObject m_BlockTypeTwo;
 
-    GameObject m_RoofTypeOne;
-    GameObject m_RoofTypeTwo;
-    GameObject m_RoofTypeThree;
 
     //private GameObject[,] m_BuildingParts;
 
@@ -27,21 +22,24 @@ public class BuildingGeneratorWindow : EditorWindow
     //Changer lignes de codes similaire à "string _TypeOfBlock = "Resources/Bases/Building/FullSided"; en  string _TypeOfBlock = "Resources/" + NomDeLenum + "/Building/FullSided";
     // où NomDeLenum == noms possibles des dossiers.
 
-    [MenuItem("Window/Building Generator")]
+[MenuItem("Window/Building Generator")]
 
     public static void ShowWindow()
     {
         //Show existing window instance. If one doesn't exist, make one.
         EditorWindow.GetWindow(typeof(BuildingGeneratorWindow));
+
     }
 
 
 
     private void OnGUI()
     {
+
         m_Lenght = EditorGUILayout.IntField("Lenght", m_Lenght);
         m_Width = EditorGUILayout.IntField("Width", m_Width);
         m_Heights = EditorGUILayout.IntField("Floors", m_Heights);
+
 
         if (GUILayout.Button("Generate Building"))
         {
@@ -62,55 +60,23 @@ public class BuildingGeneratorWindow : EditorWindow
 
     private void ChooseBlockVisual()
     {
+        Part_BlockManager _PartScript = m_Parts.GetComponent<Part_BlockManager>();
+
+        _PartScript.m_List_BlockToChoose.Clear();
+        _PartScript.m_List_RoofBlockToChoose.Clear();
+
         if (m_Lenght == 1 && m_Width == 1)
         {
-            string _TypeOfBlock = "Bases/Building/FullSided/Block_FullSided";
-            m_BlockTypeOne = Resources.Load(_TypeOfBlock) as GameObject;
-
-            string _FirstTypeOfRoof = "Bases/Roof/FullSided/BlockRoof_FullSided";
-
-            m_RoofTypeOne = Resources.Load(_FirstTypeOfRoof) as GameObject;
-
-            //Start function to spawn the building
             InstantiateSmallBuilding();
         }
 
         else if (m_Width == 1 || m_Lenght == 1)
         {
-            string _FirstTypeOfBlock = "Bases/Building/ThreeSided/Block_ThreeSided";
-            string _SecondTypeOfBlock = "Bases/Building/TwoSided/Block_TwoSided";
-
-            m_BlockTypeOne = Resources.Load(_FirstTypeOfBlock) as GameObject;
-            m_BlockTypeTwo = Resources.Load(_SecondTypeOfBlock) as GameObject;
-
-            string _FirstTypeOfRoof = "Bases/Roof/ThreeSided/BlockRoof_ThreeSided";
-            string _SecondTypeOfRoof = "Bases/Roof/TwoSided/BlockRoof_TwoSided";
-
-            m_RoofTypeOne = Resources.Load(_FirstTypeOfRoof) as GameObject;
-            m_RoofTypeTwo = Resources.Load(_SecondTypeOfRoof) as GameObject;
-
-            //Start function to spawn the building
             InstantiateSimpleBuilding();
         }
 
         else if (m_Width > 1 && m_Lenght > 1)
         {
-            string _FirstTypeOfBlock = "Bases/Building/Corner/Block_Corner";
-            string _SecondTypeOfBlock = "Bases/Building/OneSided/Block_OneSided";
-
-            m_BlockTypeOne = Resources.Load(_FirstTypeOfBlock) as GameObject;
-            m_BlockTypeTwo = Resources.Load(_SecondTypeOfBlock) as GameObject;
-
-
-            string _FirstTypeOfRoof = "Bases/Roof/Corner/BlockRoof_Corner";
-            string _SecondTypeOfRoof = "Bases/Roof/OneSided/BlockRoof_OneSided";
-            string _ThirdTypeOfRoof = "Bases/Roof/Filling/BlockRoof_Fill";
-
-            m_RoofTypeOne = Resources.Load(_FirstTypeOfRoof) as GameObject;
-            m_RoofTypeTwo = Resources.Load(_SecondTypeOfRoof) as GameObject;
-            m_RoofTypeThree = Resources.Load(_ThirdTypeOfRoof) as GameObject;
-
-            //Start function to spawn the building
             InstantiateComplexBuilding();
         }
 
@@ -127,11 +93,22 @@ public class BuildingGeneratorWindow : EditorWindow
         Part_BlockManager _PartScript = instiantedPart.GetComponent<Part_BlockManager>();
         _PartScript.m_Heights = m_Heights;
 
-        m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 0, 0);
-        _PartScript.m_BlockVisual = m_BlockTypeOne;
+        _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 0, 0);
-        _PartScript.m_Roof = m_RoofTypeOne;
+        foreach (GameObject Block in Resources.LoadAll("Bases/Building/FullSided"))
+        {
+            _PartScript.m_List_BlockToChoose.Add(Block);
+        }
+
+
+        _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+
+        foreach (GameObject Block in Resources.LoadAll("Bases/Roof/FullSided"))
+        {
+            _PartScript.m_List_RoofBlockToChoose.Add(Block);
+        }
+
 
         _PartScript.InstiateBlock();
 
@@ -156,29 +133,51 @@ public class BuildingGeneratorWindow : EditorWindow
 
                 if (i == 0)
                 {
-                    Debug.Log(m_BlockTypeOne);
-                    m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeOne;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 90, 0);
 
-                    m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    _PartScript.m_Roof = m_RoofTypeOne;
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/ThreeSided"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
+ 
+
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 90, 0);
+
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/ThreeSided"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
 
                 }
                 else if (i == m_Lenght - 1)
                 {
-                    m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 270, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeOne;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 270, 0);
 
-                    m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 270, 0);
-                    _PartScript.m_Roof = m_RoofTypeOne;
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/ThreeSided"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
+
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 270, 0);
+
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/ThreeSided"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
                 }
                 else
                 {
-                    m_BlockTypeTwo.transform.rotation = Quaternion.Euler(0,0, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeTwo;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0,0, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/TwoSided"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
 
-                    m_RoofTypeTwo.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    _PartScript.m_Roof = m_RoofTypeTwo;
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/TwoSided"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
                 }
 
                 _PartScript.InstiateBlock();
@@ -200,29 +199,46 @@ public class BuildingGeneratorWindow : EditorWindow
 
                 if (i == 0)
                 {
-                    Debug.Log(m_BlockTypeOne);
-                    m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeOne;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/ThreeSided"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
 
-                    m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    _PartScript.m_Roof = m_RoofTypeOne;
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/ThreeSided"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
 
                 }
                 else if (i == m_Width - 1)
                 {
-                    m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeOne;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/ThreeSided"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
 
-                    m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    _PartScript.m_Roof = m_RoofTypeOne;
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/ThreeSided"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
                 }
                 else
                 {
-                    m_BlockTypeTwo.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeTwo;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/TwoSided"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
 
-                    m_RoofTypeTwo.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    _PartScript.m_Roof = m_RoofTypeTwo;
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/TwoSided"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
                 }
 
                 _PartScript.InstiateBlock();
@@ -252,79 +268,135 @@ public class BuildingGeneratorWindow : EditorWindow
 
                 if (i == 0 && j == 0)
                 {
-                    m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeOne;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/Corner"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
 
-                    m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 0, 0);
-                    _PartScript.m_Roof = m_RoofTypeOne;
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 0, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/Corner"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
 
                 }
                 else if (i == 0 && j == (m_Width - 1))
                 {
-                    m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeOne;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/Corner"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
 
-                    m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 90, 0);
-                    _PartScript.m_Roof = m_RoofTypeOne;
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 90, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/Corner"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
                 }
                 else if (i == (m_Lenght - 1) && j == 0)
                 {
-                    m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 270, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeOne;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 270, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/Corner"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
 
-                    m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 270, 0);
-                    _PartScript.m_Roof = m_RoofTypeOne;
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 270, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/Corner"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
                 }
                 else if (i == (m_Lenght -1) && j == (m_Width - 1))
                 {
-                    m_BlockTypeOne.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    _PartScript.m_BlockVisual = m_BlockTypeOne;
+                    _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Building/Corner"))
+                    {
+                        _PartScript.m_List_BlockToChoose.Add(Block);
+                    }
 
-                    m_RoofTypeOne.transform.rotation = Quaternion.Euler(0, 180, 0);
-                    _PartScript.m_Roof = m_RoofTypeOne;
+                    _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 180, 0);
+                    foreach (GameObject Block in Resources.LoadAll("Bases/Roof/Corner"))
+                    {
+                        _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                    }
                 }
                 else
                 {
                     if(j == 0 && (i > 0 || i < (m_Lenght -1)))
                     {
-                        m_BlockTypeTwo.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        _PartScript.m_BlockVisual = m_BlockTypeTwo;
+                        _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Building/OneSided"))
+                        {
+                            _PartScript.m_List_BlockToChoose.Add(Block);
+                        }
 
-                        m_RoofTypeTwo.transform.rotation = Quaternion.Euler(0, 270, 0);
-                        _PartScript.m_Roof = m_RoofTypeTwo;
+                        _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 270, 0);
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Roof/OneSided"))
+                        {
+                            _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                        }
                     }
                     else if(j == (m_Width -1) && (i > 0 || i < (m_Lenght -1)))
                     {
-                        m_BlockTypeTwo.transform.rotation = Quaternion.Euler(0, 180, 0);
-                        _PartScript.m_BlockVisual = m_BlockTypeTwo;
+                        _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 180, 0);
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Building/OneSided"))
+                        {
+                            _PartScript.m_List_BlockToChoose.Add(Block);
+                        }
 
-                        m_RoofTypeTwo.transform.rotation = Quaternion.Euler(0, 90, 0);
-                        _PartScript.m_Roof = m_RoofTypeTwo;
+                        _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 90, 0);
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Roof/OneSided"))
+                        {
+                            _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                        }
                     }
 
 
 
                     else if(i == 0 && (j > 0 || j < (m_Width -1)))
                     {
-                        m_BlockTypeTwo.transform.rotation = Quaternion.Euler(0, 90, 0);
-                        _PartScript.m_BlockVisual = m_BlockTypeTwo;
+                        _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 90, 0);
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Building/OneSided"))
+                        {
+                            _PartScript.m_List_BlockToChoose.Add(Block);
+                        }
 
-                        m_RoofTypeTwo.transform.rotation = Quaternion.Euler(0, 0, 0);
-                        _PartScript.m_Roof = m_RoofTypeTwo;
+                        _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 0, 0);
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Roof/OneSided"))
+                        {
+                            _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                        }
                     }
                     else if( i == (m_Lenght-1) && ( j > 0 || j < (m_Width -1)))
                     {
-                        m_BlockTypeTwo.transform.rotation = Quaternion.Euler(0, 270, 0);
-                        _PartScript.m_BlockVisual = m_BlockTypeTwo;
+                        _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 270, 0);
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Building/OneSided"))
+                        {
+                            _PartScript.m_List_BlockToChoose.Add(Block);
+                        }
 
-                        m_RoofTypeTwo.transform.rotation = Quaternion.Euler(0, 180, 0);
-                        _PartScript.m_Roof = m_RoofTypeTwo;
+                        _PartScript.m_Roof.transform.rotation = Quaternion.Euler(0, 180, 0);
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Roof/OneSided"))
+                        {
+                            _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                        }
                     }
 
                     else
                     {
-                        _PartScript.m_BlockVisual = null;
-                        _PartScript.m_Roof = m_RoofTypeThree;
+
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Building/Filling"))
+                        {
+                            _PartScript.m_List_BlockToChoose.Add(Block);
+                        }
+
+                        foreach (GameObject Block in Resources.LoadAll("Bases/Roof/Filling"))
+                        {
+                            _PartScript.m_List_RoofBlockToChoose.Add(Block);
+                        }
                     }
 
                 }
