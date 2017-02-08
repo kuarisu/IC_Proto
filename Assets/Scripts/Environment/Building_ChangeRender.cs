@@ -25,8 +25,21 @@ void Start()
 
         foreach (Transform Children in m_Visual.transform)
         {
-            if(Children != null)
+            if (Children != null)
                 Children.gameObject.layer = LayerMask.NameToLayer("Default");
+
+            foreach (Transform Thing in Children.transform)
+            {
+                if (Thing != null)
+                    Thing.gameObject.layer = LayerMask.NameToLayer("Default");
+
+                foreach (Transform Object in Thing.transform)
+                {
+                    if (Object != null)
+                        Object.gameObject.layer = LayerMask.NameToLayer("Default");
+                }
+            }
+
         }
         
         m_IsColored = true;
@@ -37,9 +50,21 @@ void Start()
 
         foreach (Transform Children in m_Visual.transform)
         {
+            if (Children != null)
+                Children.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
 
+            foreach (Transform Thing in Children.transform)
+            {
+                if (Thing != null)
+                    Thing.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
 
-            Children.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
+                foreach (Transform Object in Thing.transform)
+                {
+                    if (Object != null)
+                        Object.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
+                }
+            }
+
         }
 
 
@@ -48,10 +73,10 @@ void Start()
 
     public void ChangeRenderFade()
     {
-        foreach (Renderer Children in GetComponentsInChildren<Renderer>())
+        foreach (Material Children in this.GetComponent<Building_ListMaterial>().m_ListOfMaterial)
         {
             Material mat;
-            mat = Children.material;
+            mat = Children;
 
             mat.SetFloat("_Mode", 2);
             mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
@@ -66,10 +91,10 @@ void Start()
 
     public void ChangeRenderOpaque()
     {
-        foreach (Renderer Children in GetComponentsInChildren<Renderer>())
+        foreach (Material Children in this.GetComponent<Building_ListMaterial>().m_ListOfMaterial)
         {
             Material mat;
-            mat = Children.material;
+            mat = Children;
 
             mat.SetFloat("_Mode", 0);
             mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);

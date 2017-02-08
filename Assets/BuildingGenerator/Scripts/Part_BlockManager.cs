@@ -5,6 +5,8 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class Part_BlockManager : MonoBehaviour {
 
+    public Building_ListMaterial m_Building;
+
     public List<GameObject> m_List_BlockToChoose = new List<GameObject>();
     public List<GameObject> m_List_RoofBlockToChoose = new List<GameObject>();
 
@@ -35,6 +37,19 @@ public class Part_BlockManager : MonoBehaviour {
                     m_RandomBlock = m_List_BlockToChoose[Random.RandomRange(1, m_List_BlockToChoose.Count)];
                 }
                 GameObject _instiantedBlock = Instantiate(m_RandomBlock, _blockPosition, m_BlockVisual.transform.rotation);
+
+                foreach (Transform Blocks in _instiantedBlock.transform)
+                {
+                    foreach (Material _material in Blocks.GetComponent<Renderer>().sharedMaterials)
+                    {
+                        if(_material.name != "Shader_ColorBuilding" && _material.name != "Shader_ShadowBuilding")
+                        {
+                            m_Building.m_ListOfMaterial.Add(_material);
+                        }
+                    }
+
+                }
+
                 _instiantedBlock.transform.parent = this.transform;
             }
 
@@ -43,6 +58,18 @@ public class Part_BlockManager : MonoBehaviour {
         Vector3 _roofPosition = new Vector3(transform.position.x, _j * 6, transform.position.z);
         m_RandomRoof = m_List_RoofBlockToChoose[Random.RandomRange(0, m_List_RoofBlockToChoose.Count)];
         GameObject _instiantedRoof = Instantiate(m_RandomRoof, _roofPosition, m_Roof.transform.rotation);
+
+        foreach (Transform Blocks in _instiantedRoof.transform)
+        {
+            foreach (Material _material in Blocks.GetComponent<Renderer>().sharedMaterials)
+            {
+                if (_material.name != "Shader_ColorBuilding" && _material.name != "Shader_ShadowBuilding")
+                {
+                    m_Building.m_ListOfMaterial.Add(_material);
+                }
+            }
+
+        }
         _instiantedRoof.transform.parent = this.transform;
 
     }

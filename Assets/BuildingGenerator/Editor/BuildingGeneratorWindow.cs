@@ -10,7 +10,8 @@ public class BuildingGeneratorWindow : EditorWindow
     int m_Heights;
 
     public GameObject m_Parts;
-    GameObject m_VisualBuilding;
+    public GameObject m_VisualBuilding;
+    GameObject m_VisualBuilding_Clone;
     GameObject m_Building;
 
 
@@ -45,8 +46,7 @@ public class BuildingGeneratorWindow : EditorWindow
         {
             if(m_Lenght > 0 && m_Width > 0 && m_Heights > 0)
             {
-                m_VisualBuilding = new GameObject("VisualBuilding");
-                m_VisualBuilding.transform.position = Vector3.zero;
+                m_VisualBuilding_Clone = Instantiate(m_VisualBuilding, Vector3.zero, m_VisualBuilding.transform.rotation);
 
                 ChooseBlockVisual();
             }
@@ -86,11 +86,13 @@ public class BuildingGeneratorWindow : EditorWindow
     private void InstantiateSmallBuilding()
     {
         GameObject instiantedPart = Instantiate(m_Parts, Vector3.zero , m_Parts.transform.rotation);
-        instiantedPart.transform.parent = m_VisualBuilding.transform;
+        instiantedPart.transform.parent = m_VisualBuilding_Clone.transform;
 
         instiantedPart.name = m_Parts.name + "_" + 0;
 
         Part_BlockManager _PartScript = instiantedPart.GetComponent<Part_BlockManager>();
+
+        _PartScript.m_Building = m_VisualBuilding_Clone.GetComponent<Building_ListMaterial>();
         _PartScript.m_Heights = m_Heights;
 
         _PartScript.m_BlockVisual.transform.rotation = Quaternion.Euler(0, 0, 0);
@@ -125,10 +127,11 @@ public class BuildingGeneratorWindow : EditorWindow
                 Vector3 _partPosition = new Vector3(i * 6, 0, 0);
                 GameObject instiantedPart = Instantiate(m_Parts, _partPosition, m_Parts.transform.rotation);           
 
-                instiantedPart.transform.parent = m_VisualBuilding.transform;
+                instiantedPart.transform.parent = m_VisualBuilding_Clone.transform;
                 instiantedPart.name = m_Parts.name + "_" + _Nb;
 
                 Part_BlockManager _PartScript = instiantedPart.GetComponent<Part_BlockManager>();
+                _PartScript.m_Building = m_VisualBuilding_Clone.GetComponent<Building_ListMaterial>();
                 _PartScript.m_Heights = m_Heights;
 
                 if (i == 0)
@@ -191,10 +194,11 @@ public class BuildingGeneratorWindow : EditorWindow
                 Vector3 _partPosition = new Vector3(0, 0, i * 6);
                 GameObject instiantedPart = Instantiate(m_Parts, _partPosition, m_Parts.transform.rotation);
 
-                instiantedPart.transform.parent = m_VisualBuilding.transform;
+                instiantedPart.transform.parent = m_VisualBuilding_Clone.transform;
                 instiantedPart.name = m_Parts.name + "_" + _Nb;
 
                 Part_BlockManager _PartScript = instiantedPart.GetComponent<Part_BlockManager>();
+                _PartScript.m_Building = m_VisualBuilding_Clone.GetComponent<Building_ListMaterial>();
                 _PartScript.m_Heights = m_Heights;
 
                 if (i == 0)
@@ -258,9 +262,10 @@ public class BuildingGeneratorWindow : EditorWindow
 
                 Vector3 _partPosition = new Vector3(i * 6, 0, j * 6);
                 GameObject instiantedPart = Instantiate(m_Parts, _partPosition, m_Parts.transform.rotation);
-                instiantedPart.transform.parent = m_VisualBuilding.transform;
+                instiantedPart.transform.parent = m_VisualBuilding_Clone.transform;
                 instiantedPart.name = m_Parts.name +"_" + _Nb;
                 Part_BlockManager _PartScript = instiantedPart.GetComponent<Part_BlockManager>();
+                _PartScript.m_Building = m_VisualBuilding_Clone.GetComponent<Building_ListMaterial>();
                 _PartScript.m_Heights = m_Heights;
 
 
