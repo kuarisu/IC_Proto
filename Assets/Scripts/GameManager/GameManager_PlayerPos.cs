@@ -8,6 +8,8 @@ public class GameManager_PlayerPos : MonoBehaviour {
 
     public Transform m_PlayerPosition;
 
+    public bool m_PlayerBool_Fly;
+
     private void Awake()
     {
         if (GameManager_PlayerPos.Instance != null)

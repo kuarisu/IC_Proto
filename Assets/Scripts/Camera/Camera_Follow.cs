@@ -18,10 +18,21 @@ public class Camera_Follow : MonoBehaviour
     }
 
 
+    void Update()
+    {
+        if (GameManager_PlayerPos.Instance.m_PlayerBool_Fly == false)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, new Vector3(m_Target.position.x - (m_Distance.x), m_Target.position.y - (m_Distance.y), m_Target.position.z - (m_Distance.z)), ref m_SmoothVel, m_SmoothTime);
+        }
+
+    }
+
     void LateUpdate()
     {
-
-        transform.position = Vector3.SmoothDamp(transform.position, new Vector3 (m_Target.position.x - (m_Distance.x), m_Target.position.y - (m_Distance.y), m_Target.position.z - (m_Distance.z)), ref m_SmoothVel, m_SmoothTime);
+        if (GameManager_PlayerPos.Instance.m_PlayerBool_Fly == true)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position, new Vector3(m_Target.position.x - (m_Distance.x), m_Target.position.y - (m_Distance.y), m_Target.position.z - (m_Distance.z)), ref m_SmoothVel, m_SmoothTime);
+        }
 
     }
 }

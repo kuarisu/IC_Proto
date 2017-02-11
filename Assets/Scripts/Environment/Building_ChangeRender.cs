@@ -10,12 +10,16 @@ public class Building_ChangeRender : MonoBehaviour {
     public bool m_IsColored;
     int m_GainPoints;
     int m_Multiplier;
-    
+
+    Transform[] m_Children_Array;
+    Renderer[] m_Children_Renderer_Array;
 
 void Start()
     {
         SetMultiplierOfGainedPoints(1);
         m_IsColored = false;
+        m_Children_Array = GetComponentsInChildren<Transform>();
+        m_Children_Renderer_Array = GetComponentsInChildren<Renderer>();
     }
 
     public void ChangeToColorCamera()
@@ -23,22 +27,10 @@ void Start()
         
         m_Visual.gameObject.layer = LayerMask.NameToLayer("Default");
 
-        foreach (Transform Children in m_Visual.transform)
+        foreach (Transform Children in m_Children_Array)
         {
             if (Children != null)
                 Children.gameObject.layer = LayerMask.NameToLayer("Default");
-
-            foreach (Transform Thing in Children.transform)
-            {
-                if (Thing != null)
-                    Thing.gameObject.layer = LayerMask.NameToLayer("Default");
-
-                foreach (Transform Object in Thing.transform)
-                {
-                    if (Object != null)
-                        Object.gameObject.layer = LayerMask.NameToLayer("Default");
-                }
-            }
 
         }
         
@@ -48,24 +40,12 @@ void Start()
     public void ChangeToBWCamera()
     {
 
-        foreach (Transform Children in m_Visual.transform)
+        foreach (Transform Children in m_Children_Array)
         {
             if (Children != null)
                 Children.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
 
-            foreach (Transform Thing in Children.transform)
-            {
-                if (Thing != null)
-                    Thing.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
-
-                foreach (Transform Object in Thing.transform)
-                {
-                    if (Object != null)
-                        Object.gameObject.layer = LayerMask.NameToLayer("BlackWhite");
-                }
-            }
-
-        }
+       }
 
 
         m_IsColored = false;
@@ -73,37 +53,41 @@ void Start()
 
     public void ChangeRenderFade()
     {
-        foreach (Material Children in this.GetComponent<Building_ListMaterial>().m_ListOfMaterial)
-        {
-            Material mat;
-            mat = Children;
 
-            mat.SetFloat("_Mode", 2);
-            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-            mat.SetInt("_ZWrite", 0);
-            mat.DisableKeyword("_ALPHATEST_ON");
-            mat.DisableKeyword("_ALPHABLEND_ON");
-            mat.EnableKeyword("_ALPHAPREMULTIPLY_ON");
-            mat.renderQueue = 3000;
+        foreach (Renderer Children in m_Children_Renderer_Array)
+        {  
+                Material mat;
+                mat = Children.GetComponent<Renderer>().material;
+
+                mat.SetFloat("_Mode", 2);
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+                mat.SetInt("_ZWrite", 0);
+                mat.DisableKeyword("_ALPHATEST_ON");
+                mat.DisableKeyword("_ALPHABLEND_ON");
+                mat.EnableKeyword("_ALPHAPREMULTIPLY_ON");
+                mat.renderQueue = 3000;
+            
         }
     }
 
     public void ChangeRenderOpaque()
     {
-        foreach (Material Children in this.GetComponent<Building_ListMaterial>().m_ListOfMaterial)
-        {
-            Material mat;
-            mat = Children;
 
-            mat.SetFloat("_Mode", 0);
-            mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
-            mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
-            mat.SetInt("_ZWrite", 1);
-            mat.DisableKeyword("_ALPHATEST_ON");
-            mat.DisableKeyword("_ALPHABLEND_ON");
-            mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-            mat.renderQueue = -1;
+        foreach (Renderer Children in m_Children_Renderer_Array)
+        {
+                Material mat;
+                mat = Children.GetComponent<Renderer>().material;
+
+
+                mat.SetFloat("_Mode", 0);
+                mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.One);
+                mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.Zero);
+                mat.SetInt("_ZWrite", 1);
+                mat.DisableKeyword("_ALPHATEST_ON");
+                mat.DisableKeyword("_ALPHABLEND_ON");
+                mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+                mat.renderQueue = -1;
         }
 
     }

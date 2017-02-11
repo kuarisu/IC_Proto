@@ -108,7 +108,6 @@ public class Player_SuperDash : MonoBehaviour {
 
             m_CanBeActiavtedByShockWave = true;
             CanSuperDash(false);
-            Debug.Log("hello");
 
         }
     }

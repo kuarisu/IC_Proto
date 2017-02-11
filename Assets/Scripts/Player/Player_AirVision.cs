@@ -23,6 +23,7 @@ public class Player_AirVision : MonoBehaviour {
     void Start()
     {
         m_startPositionY = this.transform.position.y;
+        GameManager_PlayerPos.Instance.m_PlayerBool_Fly = m_AirVisionStarted;
     }
 
 	// Update is called once per frame
@@ -32,24 +33,26 @@ public class Player_AirVision : MonoBehaviour {
 
         if (!m_AirVisionStarted && prevState.Buttons.Y == ButtonState.Released && state.Buttons.Y == ButtonState.Pressed)
         {
-            StartAirVision();
-            m_AirVisionStarted = true;
+            StartCoroutine(StartAirVision());
+
         }
         else if (m_AirVisionStarted)
         {
 
             if(prevState.Buttons.Y == ButtonState.Released &&  state.Buttons.Y == ButtonState.Pressed)
             {
-                m_AirVisionStarted = false;
                 StartCoroutine(StopVision());        
             }
         }
     }
 
-    void StartAirVision()
+    IEnumerator StartAirVision()
     {
+        GameManager_PlayerPos.Instance.m_PlayerBool_Fly = true;
         this.GetComponent<Player_MoveFree>().StopMovement();
         this.transform.DOMoveY(48, m_TimeLerpUp);
+        yield return new WaitForSeconds(m_TimeLerpUp);
+        m_AirVisionStarted = true;
     }
 
     IEnumerator StopVision()
@@ -57,5 +60,7 @@ public class Player_AirVision : MonoBehaviour {
         this.transform.DOMoveY(m_startPositionY, m_TimeLerpDown);
         yield return new WaitForSeconds(m_TimeLerpDown);
         this.GetComponent<Player_MoveFree>().StartMovementAgain();
+        m_AirVisionStarted = false;
+        GameManager_PlayerPos.Instance.m_PlayerBool_Fly = false;
     }
 }

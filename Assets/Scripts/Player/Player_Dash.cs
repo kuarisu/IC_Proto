@@ -91,7 +91,6 @@ public class Player_Dash : MonoBehaviour {
     {
         if (m_CurrentNbDash < m_NbMaxDash)
         {
-            Debug.Log(m_CurrentNbDash);
             m_CurrentNbDash++;
         }
     }
