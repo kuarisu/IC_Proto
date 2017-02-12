@@ -11,9 +11,7 @@ public class Player_SuperDash : MonoBehaviour {
     Player_MoveFree m_PlayerMoveScript;
 
     [SerializeField]
-    TrailRenderer m_Trail;
-    [SerializeField]
-    GameObject m_LebonDebug;
+    ParticleSystem m_Trail;
 
     [SerializeField]
     int m_NbMaxDash;
@@ -38,7 +36,7 @@ public class Player_SuperDash : MonoBehaviour {
     void Start()
     {
         m_CanBeActiavtedByShockWave = true;
-        m_Trail.enabled = false;
+        m_Trail.Stop();
         m_CurrentNbDash = m_NbMaxDash;
         m_CanSuperDash = false;
         m_PlayerMoveScript = this.GetComponent<Player_MoveFree>();
@@ -62,7 +60,7 @@ public class Player_SuperDash : MonoBehaviour {
                 StopAllCoroutines();
                 m_CanSuperDashAgain = false;
                 m_PlayerMoveScript.SetPath(false);
-                m_Trail.enabled = true;
+                m_Trail.Play();
                 StartCoroutine(MovementDash());
                 StartCoroutine(TimeToSuperDashAgain());
             }
@@ -88,7 +86,7 @@ public class Player_SuperDash : MonoBehaviour {
          
 
             yield return new WaitForSeconds(0.2f);
-            m_Trail.enabled = false;
+            m_Trail.Stop();
             yield break;
     }
 

@@ -6,6 +6,10 @@ public class Multiplier_Value : MonoBehaviour {
 
     [SerializeField]
     float m_MultiplierValue;
+    [SerializeField]
+    ParticleSystem m_StarParticle;
+    [SerializeField]
+    GameObject m_VisualMultiplier;
     bool m_CanBeTakenByPlayer;
 
     void Start()
@@ -22,11 +26,21 @@ public class Multiplier_Value : MonoBehaviour {
     {
         if(m_CanBeTakenByPlayer && col.transform.tag == "Player")
         {
-            AddMultiplierValueToScore();
-            Destroy(this.gameObject);
+            StartCoroutine(BonusTaken());
         }
     }
 
+
+    IEnumerator BonusTaken()
+    {
+
+        AddMultiplierValueToScore();
+        m_StarParticle.Play();
+        m_VisualMultiplier.SetActive(false);
+        yield return new WaitForSeconds(m_StarParticle.main.duration);
+        Destroy(this.gameObject);
+        yield break;
+    }
 
     void AddMultiplierValueToScore()
     {

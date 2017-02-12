@@ -10,7 +10,7 @@ public class Player_Dash : MonoBehaviour {
     Player_MoveFree m_PlayerMoveScript;
 
     [SerializeField]
-    TrailRenderer m_Trail;
+    ParticleSystem m_Trail;
 
     [SerializeField]
     int m_NbMaxDash;
@@ -32,7 +32,7 @@ public class Player_Dash : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        m_Trail.enabled = false;
+        m_Trail.Stop();
         m_CurrentNbDash = m_NbMaxDash;
         m_CanDash = true;
         m_PlayerMoveScript = this.GetComponent<Player_MoveFree>();
@@ -49,7 +49,7 @@ public class Player_Dash : MonoBehaviour {
             {
                 m_CanDashAgain = false;
                 m_PlayerMoveScript.SetPath(false);
-                m_Trail.enabled = true;
+                m_Trail.Play();
                 StartCoroutine(MovementDash());
             }
         }
@@ -72,7 +72,7 @@ public class Player_Dash : MonoBehaviour {
         }
 
         yield return new WaitForSeconds(0.2f);
-        m_Trail.enabled = false;
+        m_Trail.Stop();
         yield return null;
     }
 

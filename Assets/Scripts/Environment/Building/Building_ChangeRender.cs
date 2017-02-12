@@ -114,7 +114,6 @@ void Start()
     {
         if ((col.tag == "ShockWave" || col.tag == "ShockWaveCar") && !m_IsColored)
         {
-            Debug.Log(this.transform.name);
             ChangeToColorCamera();
             this.GetComponent<Building_Points>().SpawnMultipliers();
             GameManager_Score.Instance.UpdateScore(m_GainPoints * m_Multiplier);
