@@ -25,11 +25,14 @@ public class GameManager_Time : MonoBehaviour {
 
         GameManager_Time.Instance = this;
         DontDestroyOnLoad(this.gameObject);
+
     }
 
 
     void Start()
     {
+        Application.targetFrameRate = 100;
+
         StartCoroutine(Timer());
     }
 

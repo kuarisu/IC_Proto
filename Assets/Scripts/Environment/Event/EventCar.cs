@@ -53,7 +53,7 @@ public class EventCar : MonoBehaviour {
             m_AgentCar.destination = m_TargetPosition.position;
             m_DistanceToDestination = Vector3.Distance(m_TargetPosition.position, m_AgentCar.transform.position);
 
-            if (m_DistanceToDestination < 1.5f)
+            if (m_DistanceToDestination < 3)
             {
 
                 if (m_indexOfNextTarget < (m_ListOfKeyPoints.Count - 1))

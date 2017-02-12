@@ -30,6 +30,7 @@ public class Props_ChangeRender : MonoBehaviour {
 
         if ((col.tag == "ShockWave" || col.tag == "ShockWaveCar") && !m_IsColored)
         {
+            Debug.Log(this.transform.name);
             ChangeToColorCamera();
 
         }

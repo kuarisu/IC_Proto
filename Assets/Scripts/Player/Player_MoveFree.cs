@@ -51,7 +51,7 @@ public class Player_MoveFree : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         state = GamePad.GetState(playerIndex);
         if (m_CanChangePath)

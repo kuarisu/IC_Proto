@@ -18,7 +18,7 @@ public class Camera_Follow : MonoBehaviour
     }
 
 
-    void Update()
+    void FixedUpdate()
     {
         if (GameManager_PlayerPos.Instance.m_PlayerBool_Fly == false)
         {
