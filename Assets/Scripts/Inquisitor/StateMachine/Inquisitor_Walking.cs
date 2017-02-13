@@ -18,7 +18,8 @@ public class Inquisitor_Walking : StateMachineBehaviour {
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-       m_Agent.destination = m_TargetPosition.position;
+        m_Agent.destination = m_TargetPosition.position;
+ 
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state

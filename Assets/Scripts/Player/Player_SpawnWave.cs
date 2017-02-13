@@ -21,7 +21,7 @@ public class Player_SpawnWave : MonoBehaviour {
 
         if (state.Buttons.B == ButtonState.Pressed  && m_CanSpawnAgain)
         {
-            Camera_ScreenShake.Instance.ScreenShakeStart();
+            //Camera_ScreenShake.Instance.ScreenShakeStart();
             StartCoroutine(SpawnWave());
             StartCoroutine(Vibration());
 
