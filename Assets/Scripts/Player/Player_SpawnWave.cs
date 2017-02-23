@@ -23,7 +23,7 @@ public class Player_SpawnWave : MonoBehaviour {
         {
             //Camera_ScreenShake.Instance.ScreenShakeStart();
             StartCoroutine(SpawnWave());
-            StartCoroutine(Vibration());
+            //StartCoroutine(Vibration());
 
         }
 	}

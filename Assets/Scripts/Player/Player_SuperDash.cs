@@ -36,7 +36,7 @@ public class Player_SuperDash : MonoBehaviour {
     void Start()
     {
         m_CanBeActiavtedByShockWave = true;
-        m_Trail.Stop();
+        //m_Trail.Stop();
         m_CurrentNbDash = m_NbMaxDash;
         m_CanSuperDash = false;
         m_PlayerMoveScript = this.GetComponent<Player_MoveFree>();

@@ -51,10 +51,13 @@ public class Wave_Action : MonoBehaviour {
     IEnumerator Expending()
     {
         float _currentTime = 0;
+        //m_ColliderWave.radius = m_MinSizeTrigger;
+
         while (_currentTime < m_MaxTimeExpension)
         {
             m_ColliderWave.radius = Mathf.Lerp(m_MinSizeTrigger, m_MaxSizeTrigger, _currentTime / m_MaxTimeExpension);
             m_VisualWave.transform.localScale = Vector3.Lerp(m_MinSizeMesh, m_MaxSizeMesh, _currentTime / m_MaxTimeExpension);
+
             _currentTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
@@ -80,6 +83,17 @@ public class Wave_Action : MonoBehaviour {
     }
 
 
-    
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log(other.GetComponent<Collider>().gameObject.transform.name);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log(other.GetComponent<Collider>().gameObject.transform.name);
+    }
+
+
+
 
 }

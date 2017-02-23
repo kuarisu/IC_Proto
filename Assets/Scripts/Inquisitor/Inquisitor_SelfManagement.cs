@@ -5,6 +5,8 @@ using UnityEngine.AI;
 
 public class Inquisitor_SelfManagement : MonoBehaviour {
 
+
+
     [SerializeField]
     Animator m_An;          //Permet d'accéder à la state machine
     Transform m_CurrentTarget; //Serialized pour le debug, puis à set en fonction du trigger lors du spawn. Pourra changer par la suite.
@@ -75,6 +77,7 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
 
     public void StartPatrolingBehavior()        //Met l'objet en état de Patroling
     {
+        Debug.Log("hellooooooooo");
         m_An.SetBool("IsWalking", false);
         m_An.SetBool("IsPatroling", true);
         m_An.SetBool("IsAlerted", false);
@@ -124,6 +127,7 @@ public class Inquisitor_SelfManagement : MonoBehaviour {
     {
         while (true)
         {
+
             float _distanceToTarget = Vector3.Distance(m_CurrentTarget.position, transform.position);               //Calcule la distance entre la target et l'objet
             //Si la distance entre la target et l'objet est inférieur à la distance minimale requise alors l'objet réagit
             if (_distanceToTarget < m_DistanceMiniToTarget + (m_CurrentTarget.GetComponent<Collider>().bounds.size.x + m_CurrentTarget.GetComponent<Collider>().bounds.size.z) / 2)

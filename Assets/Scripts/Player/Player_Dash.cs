@@ -32,7 +32,7 @@ public class Player_Dash : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
     {
-        m_Trail.Stop();
+        //m_Trail.Stop();
         m_CurrentNbDash = m_NbMaxDash;
         m_CanDash = true;
         m_PlayerMoveScript = this.GetComponent<Player_MoveFree>();
