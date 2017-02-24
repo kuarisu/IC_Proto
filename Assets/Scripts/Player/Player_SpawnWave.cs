@@ -21,7 +21,7 @@ public class Player_SpawnWave : MonoBehaviour {
 
         if (state.Buttons.B == ButtonState.Pressed  && m_CanSpawnAgain)
         {
-            //Camera_ScreenShake.Instance.ScreenShakeStart();
+            Camera_ScreenShake.Instance.ScreenShakeStart();
             StartCoroutine(SpawnWave());
             //StartCoroutine(Vibration());
 
@@ -34,7 +34,6 @@ public class Player_SpawnWave : MonoBehaviour {
         m_CanSpawnAgain = false;
         GameObject _Wave = (GameObject)Instantiate(m_WavePrefab, new Vector3(transform.position.x, 0, transform.position.z), transform.rotation);
 
-        _Wave.GetComponent<Wave_Action>().m_Target = this.transform;
         yield return new WaitForSeconds(m_WaitingTime);
         m_CanSpawnAgain = true;
         yield return null;

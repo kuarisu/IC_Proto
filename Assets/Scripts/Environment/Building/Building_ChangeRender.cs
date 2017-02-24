@@ -44,7 +44,7 @@ void Start()
 
             Material mat;
             mat = SubChildren.GetComponent<Renderer>().material;
-            if (mat.name != "M_Window_01 (Instance)" && mat.name != "M_Window_02 (Instance)" && mat.name != "M_Lamp (Instance)" && mat.name != "M_Door_02 (Instance)" && mat.name != "M_Door_01 (Instance)")
+            if (mat.name != "M_Window_01 (Instance)" && mat.name != "M_Window_02 (Instance)" && mat.name != "M_Lamp (Instance)" && mat.name != "M_Door_02 (Instance)" && mat.name != "M_Door_01 (Instance)" && mat.HasProperty("_Fade"))
             {
                 StartCoroutine(ChangeEffect(mat));
             }

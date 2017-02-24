@@ -11,6 +11,7 @@ public class Wave_Action : MonoBehaviour {
     public Transform m_Target;
     [SerializeField]
     SphereCollider m_ColliderWave;
+
     [SerializeField]
     GameObject m_VisualWave;
 
@@ -37,21 +38,15 @@ public class Wave_Action : MonoBehaviour {
 
     void Start ()
     {
-        m_ColliderWave.radius = 0.5f;
+        m_ColliderWave.radius = m_MinSizeTrigger;
         StartCoroutine(Expending());
     }
 
 
-	void Update ()
-    {
-        if(m_FollowPlayer)
-            transform.position = new Vector3(m_Target.position.x, transform.position.y, m_Target.position.z);
-	}
-
     IEnumerator Expending()
     {
         float _currentTime = 0;
-        //m_ColliderWave.radius = m_MinSizeTrigger;
+        m_ColliderWave.radius = m_MinSizeTrigger;
 
         while (_currentTime < m_MaxTimeExpension)
         {
@@ -61,12 +56,14 @@ public class Wave_Action : MonoBehaviour {
             _currentTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();
         }
-
+        this.transform.position -= new Vector3(0, 0.1f, 0);
         _currentTime = 0;
         m_CanSuperDash = true;
+
         m_Target.GetComponent<Player_SuperDash>().CanSuperDash(m_CanSuperDash);
         yield return new WaitForSeconds(m_MaxWaitingTime);
         m_CanSuperDash = false;
+
         m_Target.GetComponent<Player_SuperDash>().CanSuperDash(m_CanSuperDash);
         m_Target.GetComponent<Player_SuperDash>().ResetSuperDash();
 
@@ -81,19 +78,5 @@ public class Wave_Action : MonoBehaviour {
         yield return null;
         
     }
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log(other.GetComponent<Collider>().gameObject.transform.name);
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        Debug.Log(other.GetComponent<Collider>().gameObject.transform.name);
-    }
-
-
-
 
 }
